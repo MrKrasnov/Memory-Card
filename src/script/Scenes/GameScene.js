@@ -53,7 +53,8 @@ export default class GameScene extends Phaser.Scene {
         this.cards.forEach(card => {
             let position = positions.pop();
             // закрыть каждую карту
-            card.close();
+            card.opened = false;
+            card.setTexture('card');
             // меняем для каждой карточки позиции
             card.setPosition(position.x, position.y);
         });
@@ -85,6 +86,7 @@ export default class GameScene extends Phaser.Scene {
         card.open();
 
         if (this.openedCardsCount === (this.cards.length / 2)) {
+            card.close();
             this.start();
         }
     }
