@@ -15,6 +15,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
+        this.createTimer();
         this.createCards();
         this.createText();
         this.start();
@@ -22,8 +23,22 @@ export default class GameScene extends Phaser.Scene {
 
     update() { }
 
+    onTimerTick() {
+        if (this.timeout < 0) this.start();
+        this.timeoutText.setText(`Time: ${this.timeout--}`);
+    }
+
+    createTimer() {
+        this.time.addEvent({
+            delay: 1000,
+            callback: this.onTimerTick,
+            callbackScope: this,
+            loop: true,
+        });
+    }
+
     createText() {
-        this.timeoutText = this.add.text(5, 5, "Time: 30", {
+        this.timeoutText = this.add.text(5, 5, "", {
             font: '36px minecraft',
             fill: '#ffffff',
         });
@@ -44,6 +59,7 @@ export default class GameScene extends Phaser.Scene {
     start() {
         this.openedCard = null;
         this.openedCardsCount = 0;
+        this.timeout = constants.TIMEOUT;
         this.initCard();
     }
 
