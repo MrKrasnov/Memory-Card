@@ -1,0 +1,47 @@
+class Card extends Phaser.GameObjects.Sprite {
+    constructor(scene, value) {
+        super(scene, 0, 0, 'card')
+        this.scene = scene;
+        this.value = value;
+        this.scene.add.existing(this); // добавляет на экран
+        this.setInteractive(); // разрешает взаимодействие с событиями
+        this.opened = false;
+
+    }
+
+    hide(delay) {
+        let texture = this.opened ? 'card' + this.value : 'card';
+        this.hideVar = this.scene.tweens.add({
+            targets: this,
+            scaleX: 0,
+            easy: 'Linear',
+            duration: 150,
+            delay: delay,
+            onComplete: () => {
+                this.show(delay, texture);
+            }
+        });
+    }
+
+    show(delay, texture) {
+        this.showVar = this.scene.tweens.add({
+            targets: this,
+            scaleX: 1,
+            easy: 'Linear',
+            duration: 150,
+            delay: delay,
+            changeCard: () => this.setTexture(texture)
+        });
+    }
+
+    open(delay = 0) {
+        this.opened = true;
+        this.hide(delay);
+    }
+
+    close(delay = 0) {
+        this.opened = false;
+        this.hide(delay);
+    }
+
+}
