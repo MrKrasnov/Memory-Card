@@ -1,4 +1,13 @@
-class Card extends Phaser.GameObjects.Sprite {
+import Phaser from "phaser";
+/**
+ * Represents a card.
+ */
+export default class Card extends Phaser.GameObjects.Sprite {
+    /**
+   * Makes a new dot and initializes it.
+   * @param {Phaser.Scene} scene - The scene that this belongs to
+   * @param {value} value - The card image which can obtain behind the card
+   */
     constructor(scene, value) {
         super(scene, 0, 0, 'card')
         this.scene = scene;

@@ -1,11 +1,15 @@
-class GameScene extends Phaser.Scene {
+import Phaser from "phaser";
+import Card from "../Classes/Card";
+import { constants } from "../constants";
+
+export default class GameScene extends Phaser.Scene {
     constructor() {
         super('Game')
     }
 
     preload() {
         this.load.image('card', './assets/card.png');
-        for (let item of config.cards) {
+        for (let item of constants.CARDS) {
             this.load.image(`card${item}`, `./assets/openCard/card${item}.png`);
         }
     }
@@ -28,8 +32,8 @@ class GameScene extends Phaser.Scene {
     createCards() {
         this.cards = [];
 
-        for (let item of config.cards) {
-            for (let i = 0; i < config.rows; i++) {
+        for (let item of constants.CARDS) {
+            for (let i = 0; i < constants.ROWS; i++) {
                 this.cards.push(new Card(this, item));
             }
         }
@@ -90,11 +94,11 @@ class GameScene extends Phaser.Scene {
         let cardWidth = cardTexture.width + 10;
         let cardHeight = cardTexture.height + 10; // высота и ширина картиночки
         let positions = [];
-        let offsetX = (this.sys.game.config.width - cardWidth * config.cols) / 2 + cardWidth / 2;
-        let offsetY = (this.sys.game.config.height - cardHeight * config.rows) / 2 + cardHeight / 2;
+        let offsetX = (this.sys.game.config.width - cardWidth * constants.COLS) / 2 + cardWidth / 2;
+        let offsetY = (this.sys.game.config.height - cardHeight * constants.ROWS) / 2 + cardHeight / 2;
 
-        for (let row = 0; row < config.rows; row++) {
-            for (let col = 0; col < config.cols; col++) {
+        for (let row = 0; row < constants.ROWS; row++) {
+            for (let col = 0; col < constants.COLS; col++) {
                 positions.push({
                     x: offsetX + col * cardWidth,
                     y: offsetY + row * cardHeight,
