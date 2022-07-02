@@ -29,6 +29,26 @@ export default class GameScene extends Phaser.Scene {
         this.start();
     }
 
+    restart() {
+        let count = 0;
+        let asyncStart = () => {
+            count++;
+            if (count >= this.cards.length) this.start()
+        }
+
+        this.cards.forEach(card => {
+            card.move(this.sounds.pushCard, {
+                x: this.sys.game.config.width + card.width,
+                y: this.sys.game.config.height + card.height,
+                delay: card.position.delayShow,
+                callback: () => asyncStart,
+            });
+        });
+        // it'll work when each card get out
+
+
+    }
+
     update() { }
 
     createSounds() {
@@ -50,7 +70,7 @@ export default class GameScene extends Phaser.Scene {
     onTimerTick() {
         if (this.timeout < 0) {
             this.sounds.timeout.play();
-            this.start();
+            this.restart();
         }
         this.timeoutText.setText(`Time: ${this.timeout--}`);
     }
@@ -101,7 +121,11 @@ export default class GameScene extends Phaser.Scene {
 
     showCards() {
         this.cards.forEach(card => {
-            card.move(this.sounds.pushCard);
+            card.move(this.sounds.pushCard, {
+                x: card.position.x,
+                y: card.position.y,
+                delay: card.position.delayShow,
+            });
         });
     }
 
@@ -135,7 +159,7 @@ export default class GameScene extends Phaser.Scene {
         if (this.openedCardsCount === (this.cards.length / 2)) {
             this.sounds.complete.play();
             card.close();
-            this.start();
+            this.restart();
         }
     }
 
