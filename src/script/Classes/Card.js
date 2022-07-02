@@ -27,15 +27,17 @@ export default class Card extends Phaser.GameObjects.Sprite {
         this.setPosition(-this.width, -this.height);
     }
 
-    move(position) {
+    move(soundPush) {
         this.scene.tweens.add({
             targets: this,
-            x: position.x,
-            y: position.y,
+            x: this.position.x,
+            y: this.position.y,
             easy: 'Linear',
-            duration: 1000,
+            duration: 250,
+            delay: this.position.delayShow,
             onComplete: () => {
-                this.setPosition(position.x, position.y);
+                this.setPosition(this.position.x, this.position.y);
+                soundPush.play();
             }
         });
     }

@@ -18,6 +18,7 @@ export default class GameScene extends Phaser.Scene {
         this.load.audio('success', './assets/sounds/success.mp3');
         this.load.audio('theme', './assets/sounds/theme.mp3');
         this.load.audio('timeout', './assets/sounds/timeout.mp3');
+        this.load.audio('pushCard', './assets/sounds/sound_push_card.mp3');
     }
 
     create() {
@@ -37,6 +38,7 @@ export default class GameScene extends Phaser.Scene {
             success: this.sound.add('success'),
             theme: this.sound.add('theme'),
             timeout: this.sound.add('timeout'),
+            pushCard: this.sound.add('pushCard')
         }
         this.sounds.theme.play({
             volume: 0.1
@@ -98,10 +100,7 @@ export default class GameScene extends Phaser.Scene {
 
     showCards() {
         this.cards.forEach(card => {
-            card.move({
-                x: card.position.x,
-                y: card.position.y
-            });
+            card.move(this.sounds.pushCard);
         });
     }
 
@@ -146,10 +145,12 @@ export default class GameScene extends Phaser.Scene {
         let positions = [];
         let offsetX = (this.sys.game.config.width - cardWidth * constants.COLS) / 2 + cardWidth / 2;
         let offsetY = (this.sys.game.config.height - cardHeight * constants.ROWS) / 2 + cardHeight / 2;
+        let id = 0;
 
         for (let row = 0; row < constants.ROWS; row++) {
             for (let col = 0; col < constants.COLS; col++) {
                 positions.push({
+                    delayShow: ++id * 100,
                     x: offsetX + col * cardWidth,
                     y: offsetY + row * cardHeight,
                 })
