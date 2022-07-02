@@ -69,6 +69,7 @@ export default class GameScene extends Phaser.Scene {
 
     onTimerTick() {
         if (this.timeout < 0) {
+            this.timer.paused = true;
             this.sounds.timeout.play();
             this.restart();
         }
@@ -76,7 +77,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createTimer() {
-        this.time.addEvent({
+        this.timer = this.time.addEvent({
             delay: 1000,
             callback: this.onTimerTick,
             callbackScope: this,
@@ -107,6 +108,7 @@ export default class GameScene extends Phaser.Scene {
         this.openedCard = null;
         this.openedCardsCount = 0;
         this.timeout = constants.TIMEOUT;
+        this.timer.paused = false;
         this.initCard();
         this.showCards();
     }
