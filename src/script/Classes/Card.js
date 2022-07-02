@@ -12,18 +12,18 @@ export default class Card extends Phaser.GameObjects.Sprite {
         super(scene, 0, 0, 'card')
         this.scene = scene;
         this.value = value;
-        this.scene.add.existing(this); // добавляет на экран
-        this.setInteractive(); // разрешает взаимодействие с событиями
+        this.scene.add.existing(this); // show card in the game
+        this.setInteractive(); // unlock events
         this.opened = false;
 
     }
 
     init(position) {
-        // закрыть каждую карту
         this.position = position;
+        // hold close cards
         this.opened = false;
         this.setTexture('card');
-        // меняем для каждой карточки позиции
+        // set position for each card
         this.setPosition(-this.width, -this.height);
     }
 
@@ -44,7 +44,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
 
     hide(delay) {
         let texture = this.opened ? 'card' + this.value : 'card';
-        this.hideVar = this.scene.tweens.add({
+        this.scene.tweens.add({
             targets: this,
             scaleX: 0,
             easy: 'Linear',
@@ -57,7 +57,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
     }
 
     show(delay, texture) {
-        this.showVar = this.scene.tweens.add({
+        this.scene.tweens.add({
             targets: this,
             scaleX: 1,
             easy: 'Linear',

@@ -40,6 +40,7 @@ export default class GameScene extends Phaser.Scene {
             timeout: this.sound.add('timeout'),
             pushCard: this.sound.add('pushCard')
         }
+        this.sounds.theme.loop = true;
         this.sounds.theme.play({
             volume: 0.1
         });
@@ -112,12 +113,12 @@ export default class GameScene extends Phaser.Scene {
         // уже есть открытая карта
         if (this.openedCard) {
             if (this.openedCard.value === card.value) {
-                // если картинки равны - запомнить
+                // if the images are the same
                 this.openedCard = null;
                 this.sounds.success.play();
                 ++this.openedCardsCount;
             } else {
-                // если картинки разные скрыть их
+                // if images are different
                 this.openedCard.close();
                 card.open(0);
                 card.close(500);
@@ -125,7 +126,7 @@ export default class GameScene extends Phaser.Scene {
                 return false;
             }
         } else {
-            // ещё не открывалась карта
+            // if once card dot't open
             this.openedCard = card;
         }
 
