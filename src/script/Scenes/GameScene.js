@@ -85,18 +85,23 @@ export default class GameScene extends Phaser.Scene {
         this.openedCardsCount = 0;
         this.timeout = constants.TIMEOUT;
         this.initCard();
+        this.showCards();
     }
 
     initCard() {
         let positions = this.getCardsPositions();
 
         this.cards.forEach(card => {
-            let position = positions.pop();
-            // закрыть каждую карту
-            card.opened = false;
-            card.setTexture('card');
-            // меняем для каждой карточки позиции
-            card.setPosition(position.x, position.y);
+            card.init(positions.pop());
+        });
+    }
+
+    showCards() {
+        this.cards.forEach(card => {
+            card.move({
+                x: card.position.x,
+                y: card.position.y
+            });
         });
     }
 
