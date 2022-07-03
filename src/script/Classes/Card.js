@@ -1,3 +1,4 @@
+import { call } from "file-loader";
 import Phaser from "phaser";
 /**
  * Represents a card.
@@ -43,7 +44,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
         });
     }
 
-    hide(delay) {
+    hide(delay, callback) {
         let texture = this.opened ? 'card' + this.value : 'card';
         this.scene.tweens.add({
             targets: this,
@@ -52,25 +53,30 @@ export default class Card extends Phaser.GameObjects.Sprite {
             duration: 150,
             delay: delay,
             onComplete: () => {
-                this.show(delay, texture);
+                this.show(delay, texture, callback);
             }
         });
     }
 
-    show(delay, texture) {
+    show(delay, texture, callback) {
         this.scene.tweens.add({
             targets: this,
             scaleX: 1,
             easy: 'Linear',
             duration: 150,
             delay: delay,
-            changeCard: () => this.setTexture(texture)
+            changeCard: () => {
+                this.setTexture(texture)
+                if (callback) {
+                    callback();
+                }
+            }
         });
     }
 
-    open(delay = 0) {
+    open(delay, callback) {
         this.opened = true;
-        this.hide(delay);
+        this.hide(delay, callback);
     }
 
     close(delay = 0) {
