@@ -123,6 +123,7 @@ export default class GameScene extends Phaser.Scene {
 
     showCards() {
         this.cards.forEach(card => {
+            card.depth = card.position.delayShow;
             card.move(this.sounds.pushCard, {
                 x: card.position.x,
                 y: card.position.y,
