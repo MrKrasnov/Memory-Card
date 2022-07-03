@@ -29,26 +29,6 @@ export default class GameScene extends Phaser.Scene {
         this.start();
     }
 
-    restart() {
-        if (!this.isStarted) return;
-        this.isStarted = false;
-
-        let count = 0;
-        let asyncStart = () => {
-            count++;
-            if (count >= this.cards.length) this.start()
-        }
-
-        this.cards.forEach(card => {
-            card.move(this.sounds.pushCard, {
-                x: this.sys.game.config.width + card.width,
-                y: this.sys.game.config.height + card.height,
-                delay: card.position.delayShow,
-                callback: () => asyncStart,
-            });
-        });
-    }
-
     update() { }
 
     createSounds() {
@@ -61,14 +41,13 @@ export default class GameScene extends Phaser.Scene {
             pushCard: this.sound.add('pushCard')
         }
         this.sounds.theme.loop = true;
-        this.sounds.theme.play({
-            volume: 0.1
-        });
-
+        // this.sounds.theme.play({
+        //     volume: 0.1
+        // });
     }
 
     onTimerTick() {
-        if (this.timeout < 0) {
+        if (this.timeout <= 0) {
             this.timer.paused = true;
             this.sounds.timeout.play();
             this.restart();
@@ -102,6 +81,26 @@ export default class GameScene extends Phaser.Scene {
         }
 
         this.input.on('gameobjectdown', this.onCardClicked, this);
+    }
+
+    restart() {
+        if (!this.isStarted) return;
+        this.isStarted = false;
+
+        let count = 0;
+        let asyncStart = () => {
+            ++count;
+            if (count >= this.cards.length) this.start()
+        }
+
+        this.cards.forEach(card => {
+            card.move(this.sounds.pushCard, {
+                x: this.sys.game.config.width + card.width,
+                y: this.sys.game.config.height + card.height,
+                delay: card.position.delayShow,
+                callback: asyncStart,
+            });
+        });
     }
 
     start() {
@@ -172,8 +171,6 @@ export default class GameScene extends Phaser.Scene {
                 this.restart();
             }
         });
-
-
     }
 
     initGetCardsPositions() {

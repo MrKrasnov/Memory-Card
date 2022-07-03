@@ -37,7 +37,6 @@ export default class Card extends Phaser.GameObjects.Sprite {
             duration: 250,
             delay: position.delay,
             onComplete: () => {
-                this.setPosition(this.position.x, this.position.y);
                 soundPush.play();
                 if (position.callback) position.callback();
             }
