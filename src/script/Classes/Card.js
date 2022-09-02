@@ -5,7 +5,7 @@ import Phaser from "phaser";
  */
 export default class Card extends Phaser.GameObjects.Sprite {
     /**
-   * Makes a new dot and initializes it.
+   * Makes a new cart and initializes it.
    * @param {Phaser.Scene} scene - The scene that this belongs to
    * @param {value} value - The card image which can obtain behind the card
    */
