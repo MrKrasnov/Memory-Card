@@ -3,13 +3,15 @@ import Card from "../Classes/Card";
 import { constants } from "../constants";
 
 export default class GameScene extends Phaser.Scene {
+
     constructor() {
-        super('Game')
+        super('Game');
+        this.lvl = "LEVEL4";
     }
 
     preload() {
         this.load.image('card', './assets/card.png');
-        for (let item of constants.CARDS) {
+        for (let item of constants[this.lvl].CARDS) {
             this.load.image(`card${item}`, `./assets/openCard/card${item}.png`);
         }
 
@@ -41,10 +43,11 @@ export default class GameScene extends Phaser.Scene {
             pushCard: this.sound.add('pushCard')
         }
         this.sounds.theme.loop = true;
-        // this.sounds.theme.play({
-        //     volume: 0.1
-        // });
+        this.sounds.theme.play({
+            volume: 0.1
+        });
     }
+
 
     onTimerTick() {
         if (this.timeout <= 0) {
@@ -74,8 +77,8 @@ export default class GameScene extends Phaser.Scene {
     createCards() {
         this.cards = [];
 
-        for (let item of constants.CARDS) {
-            for (let i = 0; i < constants.ROWS; i++) {
+        for (let item of constants[this.lvl].CARDS) {
+            for (let i = 0; i < constants[this.lvl].ROWS; i++) {
                 this.cards.push(new Card(this, item));
             }
         }
@@ -107,7 +110,7 @@ export default class GameScene extends Phaser.Scene {
         this.initGetCardsPositions()
         this.openedCard = null;
         this.openedCardsCount = 0;
-        this.timeout = constants.TIMEOUT;
+        this.timeout = constants[this.lvl].TIMEOUT;
         this.timer.paused = false;
         this.isStarted = true;
         this.initCard();
@@ -165,6 +168,7 @@ export default class GameScene extends Phaser.Scene {
         }
 
         card.open(0, () => {
+            // условие победы
             if (this.openedCardsCount === (this.cards.length / 2)) {
                 this.sounds.complete.play();
                 card.close();
@@ -178,12 +182,12 @@ export default class GameScene extends Phaser.Scene {
         let cardWidth = cardTexture.width + 10;
         let cardHeight = cardTexture.height + 10; // высота и ширина картиночки
         let positions = [];
-        let offsetX = (this.sys.game.config.width - cardWidth * constants.COLS) / 2 + cardWidth / 2;
-        let offsetY = (this.sys.game.config.height - cardHeight * constants.ROWS) / 2 + cardHeight / 2;
+        let offsetX = (this.sys.game.config.width - cardWidth * constants[this.lvl].COLS) / 2 + cardWidth / 2;
+        let offsetY = (this.sys.game.config.height - cardHeight * constants[this.lvl].ROWS) / 2 + cardHeight / 2;
         let id = 0;
 
-        for (let row = 0; row < constants.ROWS; row++) {
-            for (let col = 0; col < constants.COLS; col++) {
+        for (let row = 0; row < constants[this.lvl].ROWS; row++) {
+            for (let col = 0; col < constants[this.lvl].COLS; col++) {
                 positions.push({
                     delayShow: ++id * 100,
                     x: offsetX + col * cardWidth,

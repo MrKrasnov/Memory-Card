@@ -1,5 +1,5 @@
-import { call } from "file-loader";
 import Phaser from "phaser";
+
 /**
  * Represents a card.
  */
@@ -16,7 +16,6 @@ export default class Card extends Phaser.GameObjects.Sprite {
         this.scene.add.existing(this); // show card in the game
         this.setInteractive(); // unlock events
         this.opened = false;
-
     }
 
     init(position) {
