@@ -6,12 +6,13 @@ export default class GameScene extends Phaser.Scene {
 
     constructor() {
         super('Game');
-        this.lvl = "LEVEL4";
+        this.lvlIndex = 1;
+        this.lvl = "LEVEL1";
     }
 
     preload() {
         this.load.image('card', './assets/card.png');
-        for (let item of constants[this.lvl].CARDS) {
+        for (let item of constants["LEVEL5"].CARDS) {
             this.load.image(`card${item}`, `./assets/openCard/card${item}.png`);
         }
 
@@ -173,8 +174,23 @@ export default class GameScene extends Phaser.Scene {
                 this.sounds.complete.play();
                 card.close();
                 this.restart();
+                this.changeLvL();
             }
         });
+    }
+
+    changeLvL() {
+        if (this.lvlIndex <= 7) this.lvlIndex = this.lvlIndex + 1;
+        this.lvl = this.lvl.substring(0, this.lvl.length - 1) + this.lvlIndex;
+        this.timer.remove();
+        // console.log(this.timer.visible);
+
+        // пофиксить эту тему
+        this.preload();
+        // this.createTimer();
+        this.createCards();
+        // this.createText();
+        this.start();
     }
 
     initGetCardsPositions() {
